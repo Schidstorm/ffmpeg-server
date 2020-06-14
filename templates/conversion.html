@@ -1,0 +1,54 @@
+<html>
+<head>
+    <title>Conversion</title>
+</head>
+<body>
+<form enctype="application/x-www-form-urlencoded" method="post">
+    <label for="sourceFilePath">Source File</label>
+    <input type="text" id="sourceFilePath" name="sourceFilePath" value="C:\Users\Domin\Harold.und.Kumar.1.Go.to.White.Castle.EXTREME.UNRATED.2004.German.DL.1080p.BluRay.x264-oWn.mkv">
+    <label for="targetFileName"></label>
+    <input type="text" id="targetFileName" name="targetFileName" value="Harold und Kumar 1 - Go to the White Castle.avi">
+    <input type="submit" value="convert">
+</form>
+
+<script type="text/javascript">
+    function clear() {
+        for(const el of Array.from(document.querySelectorAll("#data-table"))) {
+            el.remove()
+        }
+    }
+
+    async function update() {
+
+        const tasks = await (await fetch("/tasks")).json();
+        const table = document.createElement("table")
+        table.setAttribute("id", "data-table")
+        for(const taskName in tasks.Tasks) {
+            if (tasks.Tasks.hasOwnProperty(taskName)) {
+                const row = document.createElement("tr")
+                const nameCell = document.createElement("td")
+                const progressCell = document.createElement("td")
+
+                const progress = Math.round(parseFloat(tasks.Tasks[taskName].Progress) * 100 * 100) / 100
+
+                nameCell.innerText = taskName+'';
+                progressCell.innerText = progress+'%';
+                row.appendChild(nameCell)
+                row.appendChild(progressCell)
+                table.appendChild(row)
+            }
+        }
+        clear()
+        document.body.appendChild(table)
+    }
+
+    function updateInterval() {
+        update()
+
+        window.setTimeout(updateInterval, 500)
+    }
+
+    updateInterval()
+</script>
+</body>
+</html>
