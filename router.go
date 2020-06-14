@@ -18,7 +18,10 @@ type Route struct {
 
 func routes() []Route {
 	return []Route{
+		{Path: "/", Controller: controller.CreateStaticController("index.html")},
 		{Path: "/favicon.ico", Controller: controller.CreateStaticController("favicon.ico")},
+		{Path: "/dropzone.min.js", Controller: controller.CreateStaticController("dropzone.min.js")},
+		{Path: "/dropzone.min.css", Controller: controller.CreateStaticController("dropzone.min.css")},
 		{Path: "/conversion", Controller: new(controller.Conversion)},
 		{Path: "/upload", Controller: new(controller.Upload)},
 		{Path: "/tasks", Controller: new(controller.Tasks)},
