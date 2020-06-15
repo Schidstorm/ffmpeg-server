@@ -1,4 +1,4 @@
-FROM golang
+FROM golang:alpine
 
 COPY . /go/src/ffmpeg-server/
 WORKDIR /go/bin
