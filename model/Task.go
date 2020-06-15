@@ -8,10 +8,10 @@ import (
 type Task struct {
 	SourceFile string
 	TargetFile string
-	Progress float32
-	Finished bool
-	Error error
-	LibTask *lib.Task
+	Progress   float32
+	Finished   bool
+	Error      error
+	LibTask    *lib.Task
 }
 
 func (t *Task) Update() {
@@ -20,12 +20,30 @@ func (t *Task) Update() {
 	t.Finished = t.LibTask.Finished()
 }
 
+func conversionHandlers(sourceFilePath, destinationFilePath string) []lib.TaskHandler {
+	return []lib.TaskHandler{
+		/*
+			ffmpeg -i "$source" -c:v libvpx-vp9 -pass 1 -b:v 1000K -threads 1 -speed 4 \
+			  -tile-columns 0 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25 \
+			  -g 9999 -aq-mode 0 -an -f webm /dev/null
+
+			ffmpeg -i "$source" -c:v libvpx-vp9 -pass 2 -b:v 1000K -threads 1 -speed 0 \
+			  -tile-columns 0 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25 \
+			  -g 9999 -aq-mode 0 -c:a libopus -b:a 64k -f webm out.webm
+		*/
+		lib.NewFfmpegHandler(
+			"-y", "-re", "-hide_banner", "-progress", "pipe:2", "-i", sourceFilePath,
+			"-c:v", "libvpx-vp9", "-pass", "1", "-b:v", "1000K", "-threads", "1", "-speed", "4", "-tile-columns", "0", "-frame-parallel", "0", "-auto-alt-ref", "1", "-lag-in-frames", "25", "-g", "9999", "-aq-mode", "0", "-an", "-f", "webm", "/dev/null"),
+		lib.NewFfmpegHandler(
+			"-y", "-re", "-hide_banner", "-progress", "pipe:2", "-i", sourceFilePath,
+			"-c:v", "libvpx-vp9", "-pass", "2", "-b:v", "1000K", "-threads", "1", "-speed", "0", "-tile-columns", "0", "-frame-parallel", "0", "-auto-alt-ref", "1", "-lag-in-frames", "25", "-g", "9999", "-aq-mode", "0", "-c:a", "libopus", "-b:a", "64k", "-f", "webm", destinationFilePath),
+	}
+}
+
 func NewFfmpegTask(sourceFileName, destinationFileName string) *Task {
 	destinationFilePath := path.Join(lib.GetSettings().ConversionDestinationDirectory, destinationFileName)
 	sourceFilePath := path.Join(lib.GetSettings().UploadDestinationDirectory, sourceFileName)
-	task := lib.NewTask(lib.NewFfmpegHandler(
-		"-y", "-re", "-hide_banner", "-progress", "pipe:2", "-i", sourceFilePath,
-		"-af", "channelmap=0", "-b:a", "128k", "-map", "0:v", "-map", "0:a", destinationFilePath))
+	task := lib.NewTask(lib.NewMultiHandler(conversionHandlers(sourceFilePath, destinationFilePath)...))
 	task.Start()
 
 	modelTask := &Task{
