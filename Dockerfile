@@ -8,9 +8,6 @@ RUN go get -v -t -d ./...
 
 WORKDIR /go/bin
 RUN packr2 build ffmpeg-server
-
-FROM alpine
-RUN apk add alpine
 RUN adduser -h /home/ffmpeg-server -D ffmpeg-server
 WORKDIR /home/ffmpeg-server
 COPY --from=0 /go/bin/ffmpeg-server /home/ffmpeg-server/ffmpeg-server
