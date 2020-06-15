@@ -5,10 +5,9 @@ WORKDIR /go/src/ffmpeg-server
 RUN go get -u github.com/gobuffalo/packr/v2/packr2
 RUN go get -u github.com/gobuffalo/packr/v2/...
 RUN go get -v -t -d ./...
-RUN packr2 clean
-RUN packr2
+
 WORKDIR /go/bin
-RUN go build ffmpeg-server
+RUN packr2 build ffmpeg-server
 
 FROM alpine
 RUN apk add alpine
