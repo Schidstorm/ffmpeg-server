@@ -6,7 +6,7 @@ var box *packr.Box
 
 func LoadTemplates() {
 
-	box = packr.New("templates", "../templates")
+	box = packr.New("../templates", "../templates")
 }
 
 func FindString(name string) (string, error) {
