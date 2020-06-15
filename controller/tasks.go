@@ -14,9 +14,15 @@ func (t *Tasks) Handle(res http.ResponseWriter, req *http.Request) error {
 	for _, t := range model.GetAllTasks().Tasks {
 		t.Update()
 	}
-	data, _ := json.Marshal(model.GetAllTasks())
+	data, err := json.Marshal(model.GetAllTasks())
+	if err != nil {
+		return err
+	}
 	res.Header().Add("Content-Type", "application/json")
 	res.WriteHeader(200)
-	_, _ = res.Write(data)
+	_, err = res.Write(data)
+	if err != nil {
+		return err
+	}
 	return nil
 }

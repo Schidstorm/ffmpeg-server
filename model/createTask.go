@@ -2,6 +2,6 @@ package model
 
 
 type CreateTask struct{
-	SourceFilePath string
+	SourceFileName string
 	TargetFileName string
 }

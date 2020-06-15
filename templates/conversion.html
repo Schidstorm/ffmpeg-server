@@ -1,17 +1,56 @@
 <html>
 <head>
     <title>Conversion</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        #targetFileName {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 <form enctype="application/x-www-form-urlencoded" method="post">
-    <label for="sourceFilePath">Source File</label>
-    <input type="text" id="sourceFilePath" name="sourceFilePath" value="C:\Users\Domin\Harold.und.Kumar.1.Go.to.White.Castle.EXTREME.UNRATED.2004.German.DL.1080p.BluRay.x264-oWn.mkv">
-    <label for="targetFileName"></label>
-    <input type="text" id="targetFileName" name="targetFileName" value="Harold und Kumar 1 - Go to the White Castle.avi">
-    <input type="submit" value="convert">
+    <table>
+        <tr>
+            <th>
+                <label for="sourceFilePath">Source File</label>
+            </th>
+            <td>
+                <select name="sourceFilePath" id="sourceFilePath"></select>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="targetFileName">Target File Name</label>
+            </th>
+            <td>
+                <input type="text" id="targetFileName" name="targetFileName" value="Harold und Kumar 1 - Go to the White Castle.avi">
+            </td>
+        </tr>
+        <tr>
+           <td colspan="2">
+               <input type="submit" value="convert">
+           </td>
+        </tr>
+
+
+
+
+    </table>
 </form>
 
 <script type="text/javascript">
+    async function loadSourceFilePath() {
+        const sourceFiles = await (await fetch("/source-files")).json();
+        const selectElement = document.getElementById("sourceFilePath")
+        for (const file of sourceFiles) {
+            const optionElement = document.createElement("option")
+            optionElement.innerText=file
+            optionElement.setAttribute("value", file)
+            selectElement.appendChild(optionElement)
+        }
+    }
+
     function clear() {
         for(const el of Array.from(document.querySelectorAll("#data-table"))) {
             el.remove()
@@ -49,6 +88,7 @@
     }
 
     updateInterval()
+    loadSourceFilePath()
 </script>
 </body>
 </html>

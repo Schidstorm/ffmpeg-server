@@ -26,8 +26,8 @@ func (c *Conversion) Handle(res http.ResponseWriter, req *http.Request) error {
 			return err
 		}
 		data.TargetFileName = req.Form.Get("targetFileName")
-		data.SourceFilePath = req.Form.Get("sourceFilePath")
-		_ = model.NewFfmpegTask(data.SourceFilePath, data.TargetFileName)
+		data.SourceFileName = req.Form.Get("sourceFilePath")
+		_ = model.NewFfmpegTask(data.SourceFileName, data.TargetFileName)
 
 		return NewRedirect(req.URL.String()).Handle(res, req)
 	default:

@@ -25,6 +25,7 @@ func routes() []Route {
 		{Path: "/conversion", Controller: new(controller.Conversion)},
 		{Path: "/upload", Controller: new(controller.Upload)},
 		{Path: "/tasks", Controller: new(controller.Tasks)},
+		{Path: "/source-files", Controller: new(controller.SourceFiles)},
 	}
 }
 

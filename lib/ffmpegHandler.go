@@ -13,6 +13,10 @@ type FfmpegHandler struct {
 }
 
 func (h *FfmpegHandler) Progress() float32 {
+	fDuration := float32(h.totalDuration)
+	if fDuration == 0 {
+		return 0
+	}
 	return float32(h.progressionTime) / float32(h.totalDuration)
 }
 

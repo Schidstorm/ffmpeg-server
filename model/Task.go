@@ -20,15 +20,16 @@ func (t *Task) Update() {
 	t.Finished = t.LibTask.Finished()
 }
 
-func NewFfmpegTask(sourceFilePath, destinationFileName string) *Task {
+func NewFfmpegTask(sourceFileName, destinationFileName string) *Task {
 	destinationFilePath := path.Join(lib.GetSettings().ConversionDestinationDirectory, destinationFileName)
+	sourceFilePath := path.Join(lib.GetSettings().UploadDestinationDirectory, sourceFileName)
 	task := lib.NewTask(lib.NewFfmpegHandler(
 		"-y", "-re", "-hide_banner", "-progress", "pipe:2", "-i", sourceFilePath,
 		"-af", "channelmap=0", "-b:a", "128k", "-map", "0:v", "-map", "0:a", destinationFilePath))
 	task.Start()
 
 	modelTask := &Task{
-		SourceFile: sourceFilePath,
+		SourceFile: sourceFileName,
 		TargetFile: destinationFilePath,
 		Progress:   0,
 		Finished:   false,
