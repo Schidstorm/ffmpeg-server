@@ -32,3 +32,4 @@ jobs:
         password: ${{secrets.DOCKER_SECRET}}
         # Docker repository to tag the image with
         repository: schidstorm/ffmpeg-server
+        push: true
