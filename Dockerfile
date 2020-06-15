@@ -2,7 +2,7 @@ FROM golang
 
 COPY . /go/src/ffmpeg-server/
 WORKDIR /go/bin
-RUN go get -v -t -d ./...
+RUN go get -v -t -d /go/src/ffmpeg-server/...
 RUN go build ffmpeg-server
 
 FROM busybox
