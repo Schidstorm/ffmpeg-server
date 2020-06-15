@@ -5,7 +5,7 @@ WORKDIR /go/bin
 RUN go get -v -t -d /go/src/ffmpeg-server/...
 RUN go build ffmpeg-server
 
-FROM busybox
+FROM alpine
 RUN apk add alpine
 RUN adduser -h /home/ffmpeg-server -D ffmpeg-server
 WORKDIR /home/ffmpeg-server
