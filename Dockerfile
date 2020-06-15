@@ -1,7 +1,7 @@
 FROM golang
 
 RUN mkdir /go/ffmpeg-server
-COPY . /go/ffmpeg-server/
+COPY . /go/src/ffmpeg-server/
 WORKDIR /go/bin
 RUN go build ffmpeg-server
 
