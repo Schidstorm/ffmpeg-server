@@ -1,8 +1,8 @@
 FROM golang
 
-RUN mkdir /go/ffmpeg-server
 COPY . /go/src/ffmpeg-server/
 WORKDIR /go/bin
+RUN go get -v -t -d ./...
 RUN go build ffmpeg-server
 
 FROM busybox
