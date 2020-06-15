@@ -1,11 +1,12 @@
 package view
 
-import "github.com/gobuffalo/packr"
+import "github.com/gobuffalo/packr/v2"
 
-var box packr.Box
+var box *packr.Box
 
 func LoadTemplates() {
-	box = packr.NewBox("../templates")
+
+	box = packr.New("templates", "../templates")
 }
 
 func FindString(name string) (string, error) {
