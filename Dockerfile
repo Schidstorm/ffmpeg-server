@@ -2,6 +2,8 @@ FROM golang:alpine
 RUN apk add git
 COPY . /go/src/ffmpeg-server/
 WORKDIR /go/src/ffmpeg-server
+RUN go get -u github.com/gobuffalo/packr/v2/packr2
+RUN go get -u github.com/gobuffalo/packr/v2/...
 RUN go get -v -t -d ./...
 RUN packr2 clean
 RUN packr2
